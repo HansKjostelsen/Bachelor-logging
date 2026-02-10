@@ -4,7 +4,9 @@ Dette repoet inneholder daglige arbeidslogger for FlowCRT bachelorprosjektet.
 
 ## Struktur
 
-- `logs/` - Daglige arbeidslogger organisert etter dato (YYYY-MM-DD.md)
+- `logs/YYYY-MM-DD/` - En mappe per arbeidsdag, hver med:
+  - `endringslogg.md` - Tekstlig beskrivelse av dagens arbeid, commits og beslutninger
+  - `kodeendringer.md` - Faktiske kodeendringer (diffs) fra FlowCRT-repoet
 
 ## Formål
 
