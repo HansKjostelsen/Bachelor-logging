@@ -99,3 +99,52 @@ fitViewOptions={{ padding: 0.2 }}
 
 ## Resultat
 Alle 9 noder passer nå innenfor rammen uansett vindusstørrelse, og tilpasser seg automatisk ved resize. Løsningen fungerer på alt fra fullskjerm til lite vindu.
+
+---
+
+## Ytterligere forbedring: Begrenset pan-område med `translateExtent`
+
+**Dato:** 10. februar 2026 (senere samme dag)
+
+### Problem
+Selv etter at nodene ble responsive og tilpasset vindusstørrelsen, kunne brukeren fortsatt panorere uendelig langt bort fra nodene i alle retninger. Dette gjorde det lett å "miste" innholdet og måtte zoome ut eller refreshe for å finne nodene igjen.
+
+### Løsning
+Lagt til `translateExtent`-propen på `<ReactFlow>`-komponenten for å begrense pan-området.
+
+### Implementasjon
+
+**Lagt til:** `translateExtent` prop med verdien `[[-200, -600], [2600, 650]]`.
+
+```jsx
+translateExtent={[
+  [-200, -600],
+  [2600, 650],
+]}
+```
+
+**Beregning av verdiene:**
+- Nodene strekker seg fra x=0 til x≈2350 (node n7 på x=2100 + nodebredde ~250)
+- Nodene strekker seg fra y=-350 (node n8) til y=400 (node n9) + nodehøyde ~50
+- Lagt til 200px padding på venstre side (x-minimum: -200)
+- Lagt til 250px padding på høyre side (x-maksimum: 2600)
+- Lagt til 250px padding på toppen (y-minimum: -600)
+- Lagt til 200px padding på bunnen (y-maksimum: 650)
+
+**Rydding:**
+- Fjernet utkommentert `panOnDrag={false}` og `panOnScroll={false}` (disse var kommentert ut fra tidligere)
+- Fjernet utkommentert `nodeExtent={[[0, 0], [1000, 600]]}` (gammel kode som ikke lenger var relevant)
+
+**Endret:** `minZoom` fra `0.1` til `0.3`.
+Etter testing viste det seg at `minZoom={0.3}` er tilstrekkelig for at alle noder skal passe i viewport på typiske skjermstørrelser. `0.1` var for konservativt og tillot unødvendig mye utzoom.
+
+```jsx
+// Før
+minZoom={0.1}
+
+// Etter
+minZoom={0.3}
+```
+
+### Resultat
+Brukeren kan nå kun panorere innenfor et begrenset område rundt nodene, med fornuftig padding på alle sider. Dette gjør det umulig å "miste" innholdet ved utilsiktet panning, samtidig som det gir nok rom til å navigere komfortabelt rundt flowchartet.

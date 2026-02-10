@@ -1,7 +1,7 @@
 # Kodeendringer - 10. februar 2026
 
 ## Oversikt
-Uncommitted endringer fra branchen `9001-modifikasjoner` i FlowCRT-repoet. Endringene omfatter utvidelse av ISO 9001-siden med flere noder og edges, samt forbedringer i responsivitet og styling.
+Uncommitted endringer fra branchen `9001-modifikasjoner` i FlowCRT-repoet. Endringene omfatter utvidelse av ISO 9001-siden med flere noder og edges, samt forbedringer i responsivitet, styling og pan-begrensning.
 
 ---
 
@@ -31,7 +31,7 @@ index bc9362e..d603dec 100644
 
 ```diff
 diff --git a/Frontend/src/pages/ISO-sider/ISO9001.jsx b/Frontend/src/pages/ISO-sider/ISO9001.jsx
-index 1e1f415..cbd3184 100644
+index 1e1f415..fa096b0 100644
 --- a/Frontend/src/pages/ISO-sider/ISO9001.jsx
 +++ b/Frontend/src/pages/ISO-sider/ISO9001.jsx
 @@ -1,4 +1,4 @@
@@ -139,8 +139,8 @@ index 1e1f415..cbd3184 100644
        type: MarkerType.ArrowClosed,
 +      color:'black',
 +
-     },
-   },
++    },
++  },
 +  {
 +    id: 'n3-n4',
 +    source: 'n3',
@@ -152,8 +152,8 @@ index 1e1f415..cbd3184 100644
 +      type: MarkerType.ArrowClosed,
 +      color:'black',
 +
-+    },
-+  },
+     },
+   },
 +  {id: 'n4-n5',
 +    source: 'n4',
 +    target: 'n5',
@@ -208,18 +208,19 @@ index 1e1f415..cbd3184 100644
 
    const onNodesChange = useCallback(
      (changes) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
-@@ -72,12 +195,18 @@ export default function App() {
+@@ -72,12 +195,15 @@ export default function App() {
            onEdgesChange={onEdgesChange}
            onConnect={onConnect}
            nodeTypes={nodeTypes}
-+          panOnDrag={false}
-+          panOnScroll={false}
-+          minZoom={0.1}
-+
-           /*nodeExtent={[
-             [0, 0],
-             [1000, 600],
-           ]}*/
+-          /*nodeExtent={[
+-            [0, 0],
+-            [1000, 600],
+-          ]}*/
++          minZoom={0.3}
++          translateExtent={[
++            [-200, -600],
++            [2600, 650],
++          ]}
             proOptions={{ hideAttribution: true }}
 +          onInit={setRfInstance}
            fitView
@@ -263,5 +264,5 @@ index 1ff957a..a42a964 100644
 
 ### Filer endret:
 1. **Frontend/src/components/FlowCRTNode.jsx** - Formatering av Handle-komponent
-2. **Frontend/src/pages/ISO-sider/ISO9001.jsx** - Lagt til 6 nye noder (n4-n9) med beskrivende labels, oppdatert edges med styling, implementert resize-lytter med useEffect og rfInstance
+2. **Frontend/src/pages/ISO-sider/ISO9001.jsx** - Lagt til 6 nye noder (n4-n9) med beskrivende labels, oppdatert edges med styling, implementert resize-lytter med useEffect og rfInstance, lagt til translateExtent for pan-begrensning, endret minZoom til 0.3, fjernet utkommentert kode
 3. **Frontend/src/styles.css** - Oppdatert node-styling med fast bredde/høyde og større font, samt dynamisk høyde på flow-wrapper
