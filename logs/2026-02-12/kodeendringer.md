@@ -1,10 +1,7 @@
 # Kodeendringer - 2026-02-12
 
 Dette dokumentet viser de faktiske kodeendringene som ble gjort 12. februar 2026 i FlowCRT-prosjektet.
-
-**Diff-område:** `711b83f..3aeef14` (fra første til siste commit denne dagen)
-
-**Merk:** Dette var en massiv dag med 39 filer endret, 3186+ linjer lagt til. Dette dokumentet viser de viktigste endringene.
+Dokumentet viser de viktigste endringene.
 
 ---
 
