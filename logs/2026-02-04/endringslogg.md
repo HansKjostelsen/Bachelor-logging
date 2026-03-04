@@ -66,3 +66,17 @@ Frontend-applikasjonen ble opprettet fra scratch, en gammel mappestruktur ble sl
 - Gammel `Websiden/`-mappe ble slettet og erstattet
 - Header/footer-farger ble endret fra `#123223` til `#013220` (morkere gronn)
 - README ble opprettet og ryddet opp
+
+---
+
+## Begrunnelse
+
+Valget om å bruke **Vite + React** som fundament for frontend-applikasjonen var naturlig gitt prosjektets behov for en moderne, komponentbasert arkitektur. Vite gir svært rask utviklingsserver og hot module replacement, noe som gjør iterasjonssyklusene kortere i en tidlig utviklingsfase der mye skal utforskes og testes.
+
+Bruken av **React Router (`react-router-dom`)** fra starten av sikrer at applikasjonen kan vokse med klart definerte ruter per ISO-standard. Å etablere denne strukturen tidlig — med egne sider for ISO 9001, ISO 14001 og ISO 27001 — gjør det enklere å bygge videre uten å måtte refaktorere routingen i ettertid.
+
+Den **midlertidige oppryddingen** (sletting av `Frontend/Websiden/` og omstrukturering) kan virke som unødvendig frem-og-tilbake, men dette er en vanlig del av tidlig prosjektoppsett der man finner riktig mappekonvensjon. Det er bedre å rydde opp i mappestrukturen tidlig enn å leve med feil kataloghierarki gjennom hele prosjektet.
+
+**Fargevalget** — mørk grønn (`#013220`) i header og footer fremfor den opprinnelige `#123223` — ble justert for å gi et mer profesjonelt og distinkt visuelt uttrykk. Denne typen estetisk finjustering tidlig i prosessen hjelper teamet å enes om en visuell profil før innholdet bygges ut.
+
+README-filen ble bevisst forenklet til én linje istedenfor å beholde den auto-genererte Vite-teksten, fordi autogenerert innhold er misvisende — det beskriver ikke prosjektet, men verktøyet. En kortfattet og ærlig README er mer nyttig enn en lang boilerplate.
