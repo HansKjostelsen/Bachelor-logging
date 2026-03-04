@@ -48,6 +48,20 @@ React Flow ble integrert i ISO 9001-siden med custom noder, edges og ny mappestr
 
 ---
 
+## Begrunnelse
+
+Valget om å ta i bruk **React Flow** (`@xyflow/react`) som bibliotek for prosessvisualisering var gjennomtenkt av flere grunner. React Flow er spesialbygd for interaktive node-baserte diagrammer og håndterer tilstand, drag-and-drop og kantkobling ut av boksen. Å bygge tilsvarende funksjonalitet fra bunnen av ville krevd betydelig mer tid, og biblioteket er godt dokumentert med aktiv vedlikehold.
+
+Opprettelsen av en dedikert **`FlowCRTNode`-komponent** i stedet for å bruke React Flows innebygde standardnoder var et bevisst valg for å sikre konsistent visuell identitet. Ved å kapsle inn styling og handles i én komponent blir det enkelt å gjenbruke og videreutvikle noden uten å berøre selve flyt-logikken.
+
+Flyttingen av ISO-sider til en dedikert **`ISO-sider/`-undermappe** under `pages/` var et strukturelt grep for å holde koden oversiktlig etter hvert som prosjektet vokser. Siden det planlegges flere ISO-standarder (9001, 14001, 27001 m.fl.), gir en egen mappe bedre navnerom og gjør det lettere å navigere i kodebasen.
+
+Bruk av **branches og pull requests** (branch `9001-modifikasjoner`, PR #2) er god utviklingspraksis selv i et lite prosjekt. Det gir en naturlig sjekkpunkt for å vurdere endringer samlet før de merges inn i main, og bidrar til en ryddig git-historikk som er enkel å følge i etterkant.
+
+De spesifikke **fargevalgene** (mørk grønn `#013220` og gull `#DDB771`) er bevisste profileringsvalg for FlowCRT som prosjekt. Hover-effekten med gull gir tydelig visuell tilbakemelding til brukeren om at en node er klikkbar, noe som er viktig for brukervennlighet i et verktøy der noder er det primære interaksjonselementet.
+
+---
+
 ## Oppsummering
 - **React Flow** (`@xyflow/react`) ble lagt til som avhengighet og integrert i ISO 9001-siden
 - **FlowCRTNode** custom komponent ble opprettet med handles for tilkoblinger
