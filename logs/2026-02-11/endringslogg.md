@@ -94,6 +94,24 @@ ISO 9001-siden ble betydelig utvidet med responsiv fitView-funksjonalitet, klikk
 
 ---
 
+## Begrunnelse
+
+Arbeidet denne dagen hadde et tydelig mål: å gjøre ISO 9001-siden til noe mer enn en statisk illustrasjon. Valgene som ble tatt reflekterer dette.
+
+**Slug-basert navigasjon** ble valgt fremfor ID-basert navigasjon fordi URL-ene da blir lesbare og meningsfulle for brukeren. En URL som `/iso9001/salg-og-kontrakts-haandtering` kommuniserer innhold direkte, og gjør det enklere å dele lenker og feilsøke routing.
+
+**Responsiv fitView** med en window resize-lytter løser et praktisk problem: React Flow initialiserer zoom og posisjon én gang ved oppstart, men tilpasser seg ikke vindusstørrelse automatisk. Å lagre `rfInstance` i state og koble den til en resize-event gir en elegant løsning som ikke krever ekstra biblioteker.
+
+**Låst zoom ble fjernet** (fra `minZoom={0.7} maxZoom={0.7}`) fordi det hindret brukeren i å utforske diagrammet på en naturlig måte. `minZoom={0.3}` og `translateExtent` gir i stedet kontrollert frihet, slik at brukeren kan zoome ut for overblikk uten å miste kontekst.
+
+**Hover-effekten med description** er en bevisst UX-avgjørelse: nodene i et prosessflyt-diagram er kompakte, og det ville bli rotete å vise all tekst hele tiden. Å la beskrivelsen dukke opp ved hover holder grensesnittet ryddig, men gir likevel tilgang til mer informasjon ved behov.
+
+**Docker-konfigurasjonen** ble lagt til for å gjøre prosjektet lettere å kjøre i ulike miljøer uten manuelle oppsett. Separasjonen mellom API-, database- og frontend-kontainere følger standard praksis og gjør det enklere å skalere eller bytte ut enkeltdeler senere.
+
+**9 separate undersider** fremfor én dynamisk side med parametre ble valgt for å holde koden enkel og oversiktlig på dette stadiet av prosjektet. Strukturen er enkel å forstå, og hver side kan utvides uavhengig uten at endringer i én side påvirker de andre.
+
+---
+
 ## Oppsummering
 - **40 filer endret**, 1331 nye linjer (+), 21 linjer slettet (-)
 - ISO 9001-siden fikk responsiv fitView som tilpasser seg vindusstørrelse automatisk
