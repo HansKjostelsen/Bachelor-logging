@@ -114,6 +114,30 @@ Hver underside har realistic prosessnoder som:
 
 ---
 
+## Begrunnelse
+
+Arbeidet denne dagen var preget av et bevisst valg om å bygge ut systemet i bredden og dybden samtidig, noe som kan virke ambisiøst, men som var nødvendig for å gi prosjektet et reelt og demonstrerbart innhold.
+
+**Redigerbare noder med dobbeltklikk og slette-knapp** ble prioritert fordi FlowCRT skal være et verktøy brukere faktisk kan tilpasse. Uten mulighet til å redigere og slette noder ville applikasjonen bare vært en statisk visning, ikke et interaktivt system. Bruk av `window.prompt()` og `window.confirm()` er bevisst enkle løsninger som fungerer godt for en prototype og unngår unødvendig kompleksitet på dette stadiet.
+
+**Multi-directional handles** (8 retninger) ble innført fordi ISO-prosesser ikke alltid følger et lineært venstre-til-høyre-mønster. Noen prosesser har tilbakekoblinger, parallelle løp eller hierarkiske relasjoner. Med kun to handles (left-target og right-source) ville mange prosessdiagrammer blitt kunstig forenklet. Det er likevel beholdt en standardmodus med to handles for de tilfellene der enkelthet er tilstrekkelig.
+
+**LabelNode** ble opprettet som en enkel komponent uten handles fordi det ble klart at ikke alle elementer i et flowdiagram skal være koblingsbare. Overskrifter og grupperingselementer trenger synlighet, ikke interaktivitet. En egen komponenttype holder koden ryddig og separerer ansvar.
+
+**5 nye ISO 9001-undersider** ble laget for å dekke prosessområder som manglet. Et system som bare dekker halvparten av ISO 9001 er vanskelig å vise frem som et komplett produkt. Med 14 prosessområder totalt er dekningen nå bred nok til å gi et reelt inntrykk av hva FlowCRT kan brukes til.
+
+**Oppgradering av de 9 eksisterende undersidene** fra placeholder-noder til realistiske prosessnoder var viktig av samme grunn: placeholder-data er meningsløst for en sensor eller en bruker som skal forstå hva systemet gjør. Noder med faktiske prosessteg gjør det mulig å vurdere om applikasjonen faktisk løser det den er ment å løse.
+
+**Flask API med database-integrasjon** ble startet fordi en ren frontend-applikasjon uten bakendstøtte ikke er en fullverdig løsning. Selv om API-et på dette tidspunktet er enkelt, legger det grunnlaget for brukerautentisering og persistent datalagring. Register-siden henger sammen med dette og er første steg mot en komplett brukerflyt.
+
+**Økt flow-wrapper høyde fra 500px til 750px** var en praktisk nødvendighet: de nye, større flowdiagrammene med 12–17 noder passet ikke innenfor den opprinnelige høyden og ville blitt kuttet av eller presset uhensiktsmessig tett sammen.
+
+**CSS-utvidelsen** var en konsekvens av all ny funksjonalitet. Delete-knapper, label-noder, flerskjermslayout, form-styling og animasjoner måtte alle ha tilhørende stil for å gi en helhetlig brukeropplevelse. Det ble valgt å samle CSS i én fil (`styles.css`) fremfor komponentlokale stilark, noe som gir enkel oversikt på dette stadiet av prosjektet.
+
+Samlet sett representerer denne dagen et vesentlig sprang i modenhet for FlowCRT, fra et skjelett til et system med reelt innhold, interaktivitet og en begyndende backend-arkitektur.
+
+---
+
 ## Oppsummering
 - **39 filer endret**, 3186+ nye linjer lagt til, 275 linjer slettet
 - Redigerbare noder med dobbeltklikk-funksjonalitet og slette-knapper
