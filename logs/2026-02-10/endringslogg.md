@@ -102,6 +102,20 @@ Alle 9 noder passer nå innenfor rammen uansett vindusstørrelse, og tilpasser s
 
 ---
 
+## Begrunnelse
+
+Valgene som ble tatt denne dagen var drevet av et grunnleggende brukervennlighetskrav: et prosessdiagram som kuttes av eller krever manuell zooming mister mye av verdien sin. Siden FlowCRT er ment å gi brukere en rask og tydelig oversikt over ISO 9001-prosessene, var det viktig at hele diagrammet alltid er synlig uten ekstra innsats fra brukeren.
+
+Valget om å bruke `useEffect` med en `resize`-lytter fremfor en ren CSS-løsning var fornuftig fordi React Flow opererer med sitt eget interne koordinatsystem. Det er ikke mulig å tvinge nodene inn i riktig visning utelukkende via CSS — `fitView()` må kalles programmatisk på React Flow-instansen. `onInit`-propen er den anbefalte måten å få tak i denne instansen på, og kombinasjonen med `useState` gjør at lytteren alltid har tilgang til en gyldig instans.
+
+Å sette `minZoom={0.3}` i stedet for et lavere tall som `0.1` var et bevisst valg basert på testing. For lav `minZoom` gir brukeren mulighet til å zoome så langt ut at nodene blir uleselige og mister all informasjonsverdi. `0.3` ble funnet som et praktisk minimum der alle noder fortsatt er lesbare på typiske skjermstørrelser.
+
+`translateExtent` ble innført for å løse det klassiske problemet med uendelig canvas: brukere kan ved uhell pane bort fra innholdet og bli desorientert. Ved å sette grenser med litt padding rundt nodene beholdes navigasjonsfriheten, men det blir umulig å "miste" seg bort fra diagrammet. Dette er spesielt viktig i en bacheloroppgave-kontekst der sluttbrukere ikke nødvendigvis er vant til interaktive flytdiagrammer.
+
+CSS-endringen fra fast `height: 600px` til `height: calc(100vh - 120px)` på `.flow-wrapper` var nødvendig for at diagrammet skal utnytte tilgjengelig skjermhøyde uavhengig av vindusstørrelse. En hardkodet pikselhøyde ville gitt dårlig opplevelse på både store og små skjermer, og motvirket hele poenget med de øvrige responsive tilpasningene.
+
+---
+
 ## Ytterligere forbedring: Begrenset pan-område med `translateExtent`
 
 **Dato:** 10. februar 2026 (senere samme dag)
