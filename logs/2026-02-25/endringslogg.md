@@ -39,6 +39,28 @@ Dagen gikk med til å debugge og fikse et irriterende problem med React Flow-han
 
 ---
 
+## Begrunnelse
+
+### Hvorfor ble handle-buggen fikset på denne måten?
+
+Den opprinnelige feilen skyldes at én enkelt CSS-regel med `!important` overstyrer alle React Flows egne posisjonsberegninger for handles. Den naive løsningen ville vært å endre tallet fra `51px` til noe mer passende, men det ville bare flytte problemet - ikke løse det. Rotårsaken er at en global regel aldri kan håndtere fire ulike plasseringer (topp, bunn, venstre, høyre) med én enkelt verdi.
+
+Valget om å fjerne den globale regelen helt og erstatte den med fire retningsspesifikke CSS-klasser er den korrekte tilnærmingen fordi:
+
+- **React Flow har egne klasser per retning** (`.react-flow__handle-top`, `...-left` osv.), som er nettopp designet for denne typen tilpasning. Å bruke disse klassene er å arbeide med rammeverket, ikke mot det.
+- **Ingen `!important` er nødvendig** med retningsspesifikke klasser, fordi CSS-spesifisiteten er tilstrekkelig. Å unngå `!important` gjør stilarket mer forutsigbart og lettere å vedlikeholde fremover.
+- **`top: 50%; transform: translateY(-50%)`-teknikken** er standardmetoden for vertikal sentrering i CSS og sikrer at venstre- og høyre-handles alltid sitter midt på noden, uavhengig av nodehøyde. Dette gjør løsningen robust mot fremtidige layoutendringer.
+
+Forenkling av handle-logikken i `FlowCRTNode.jsx` til ett ternary-uttrykk ble gjort samtidig fordi det var et naturlig tidspunkt å rydde opp: mens man uansett var inne i filen og forstod handle-logikken, var det lite overhead å gjøre koden enklere. To separate if-blokker med nesten identiske betingelser (`data.showHandles !== false && data.allHandles` vs. `data.showHandles !== false && !data.allHandles`) er et klassisk mønster som kan forenkles til én ternary, noe som reduserer risikoen for at de to blokkene går ut av synk ved fremtidige endringer.
+
+### Hvorfor kartlegge databasestruktur for brukerlagring nå?
+
+Kartleggingen av hva som kreves for å lagre flowdiagrammer per bruker ble gjort på dette tidspunktet av en pragmatisk grunn: når man uansett er dypt inne i React Flow-koden og har god oversikt over nodestrukturen (`id`, `position`, `data`) og kantstrukturen (`source`, `target`), er det naturlig å tenke gjennom hva som faktisk trenger å persisterast. Å utsette denne analysen til senere ville betydd at man måtte sette seg inn i det igjen fra bunnen av.
+
+Analysen avdekket at backend allerede har en `users`-tabell, men mangler tabell og API-endepunkter for flowlagring. Å kjenne til dette gapet tidlig gir et mer realistisk bilde av gjenstående arbeid og gjør det mulig å prioritere riktig i kommende arbeidsøkter.
+
+---
+
 ## Ikke-koderelatert arbeid
 
 I tillegg til kodeendringene ble det brukt tid på å:
