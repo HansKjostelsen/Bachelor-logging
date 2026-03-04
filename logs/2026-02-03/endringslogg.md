@@ -14,3 +14,7 @@
 ---
 
 *Merk: Dette var den første committen i repoet, og la grunnlaget for Frontend-delen av FlowCRT.*
+
+## Begrunnelse
+
+Å opprette en README-fil som aller første steg i et nytt prosjekt er god praksis. Den signaliserer tydelig hvilken rolle Frontend-mappen har i prosjektstrukturen, og gjør det lettere for nye bidragsytere å orientere seg i repoet. En slik fil koster minimalt med innsats, men gir umiddelbar verdi ved å gi kontekst til kodebasen allerede fra starten. For et bachelorprosjekt er det også nyttig å dokumentere prosjektets intensjon tidlig, slik at det er enkelt å følge utviklingen over tid.
