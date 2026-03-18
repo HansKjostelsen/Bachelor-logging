@@ -4,6 +4,40 @@ Dette manuset brukes mens appen vises live for sensor og veileder. Hvert steg ha
 
 ---
 
+## Teknisk grunnlag – React og React Flow-standarder
+
+*[ Handling: Ingen spesiell handling – stå rolig og snakk til publikum. ]*
+
+"Før vi går inn i selve demoen vil jeg si litt om hvilke tekniske valg som ligger bak applikasjonen, og hvorfor vi tok dem.
+
+Hele frontenden er bygget i React, og vi har lagt vekt på å følge de anbefalingene som React selv gir i dokumentasjonen sin. Et sentralt prinsipp der er det som kalles separation of concerns – at hver del av koden skal ha ett tydelig ansvar. React sin egen dokumentasjon formulerer det slik: 'a component should ideally only be concerned with one thing.' Det har vi fulgt ved å skille logikk fra brukergrensesnitt.
+
+Konkret betyr det at vi bruker custom hooks. React beskriver custom hooks som en måte å skjule komplekse detaljer og la komponentkoden uttrykke hensikten, ikke implementasjonen. Sitatet fra dokumentasjonen er: 'The code of your components expresses your intent, not the implementation.' Vi har to egne hooks: `useFlowPage`, som håndterer all logikk rundt lasting, lagring og tilstand for flowdiagrammene, og `useAuth`, som holder styr på hvem som er innlogget og hvilken rolle de har.
+[Kilde: react.dev/learn/reusing-logic-with-custom-hooks]
+
+For global auth-tilstand bruker vi Context API. `useContext` lar komponenter hente informasjon fra overordnede komponenter uten å sende props gjennom hele treet. Det passer perfekt til innloggingsstatus, der mange komponenter langt nede i hierarkiet trenger å vite om brukeren er Flow Admin eller ikke.
+[Kilde: react.dev/reference/react/hooks]
+
+Vi bruker også `useCallback` for å cache funksjoner som sendes ned til underkomponenter, og `useState` på riktig nivå slik at tilstanden sitter der den naturlig hører hjemme.
+[Kilde: react.dev/reference/react/hooks]
+
+Når det gjelder React Flow, som er biblioteket vi bruker for selve flowdiagrammene, har vi fulgt de anbefalingene de gir i sin dokumentasjon. En ting de er tydelige på er at `nodeTypes`-objektet – altså registreringen av hvilke node-typer som finnes – skal defineres utenfor React-komponenten. Grunnen er at React Flow sammenligner dette objektet mellom renders, og hvis det lages på nytt hver gang vil alle noder re-rendres unødvendig. Det er en liten detalj, men den har stor effekt på ytelsen.
+[Kilde: reactflow.dev/examples/nodes/custom-node]
+
+Vi bruker kontrollert tilstand for noder og kanter via `applyNodeChanges` og `applyEdgeChanges`. Det betyr at vi selv eier staten og forteller React Flow hva som har skjedd, i stedet for å la biblioteket styre alt internt. Mønsteret ser slik ut i koden: `onNodesChange` tar imot en liste med endringer og bruker `applyNodeChanges` for å oppdatere staten – immutabelt og kontrollert.
+[Kilde: reactflow.dev/learn]
+
+Selve nodene vi bruker er egendefinerte komponenter – custom nodes. React Flow sin dokumentasjon sier: 'Creating custom nodes is as easy as building a regular React component and passing it to nodeTypes.' Vår `FlowCRTNode`-komponent støtter inline redigering av navn, sletting, og åtte retningsstyrt tilkoblingspunkter – det React Flow kaller handles. Disse handle-IDene er eksplisitte, slik at vi kan styre nøyaktig hvilken retning en kant kan kobles i hvilken ende.
+[Kilde: reactflow.dev/learn/concepts/introduction]
+
+Til slutt bruker vi `fitView` med en resize-lytter, slik at diagrammet alltid tilpasser seg vindusstørrelsen og viser alle noder uansett skjermstørrelse.
+
+Så oppsummert: vi har fulgt etablerte mønstre for begge bibliotekene – ikke fordi vi måtte, men fordi det gir en applikasjon som er lettere å vedlikeholde, som yter bedre, og som er enklere å forstå for noen som leser koden for første gang.
+
+La oss nå gå over til selve demoen."
+
+---
+
 ## Intro
 
 *[ Handling: Vis startsiden eller landingssiden til appen i nettleseren. ]*
