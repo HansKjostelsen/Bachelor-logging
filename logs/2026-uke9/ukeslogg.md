@@ -1,6 +1,6 @@
-# Ukeslogg - Uke 9 (24. februar - 28. februar 2026)
+# Ukeslogg - Uke 9 (10. mars - 12. mars 2026)
 
-## Periode: Mandag 24. - Fredag 28. februar 2026
+## Periode: Tirsdag 10. - Torsdag 12. mars 2026
 
 ---
 
@@ -12,17 +12,17 @@ Uke 9 var primært viet til å legge grunnlaget for brukerlagring av flowdiagram
 
 ## Dag for dag
 
-### Tirsdag 25. februar
+### Tirsdag 10. mars
 Debugget og fikset et CSS-problem i `styles.css` der regelen `top: 51px !important` tvang alle React Flow-handles til feil posisjon. Etter at feilen var løst ble det brukt tid på å kartlegge hva som trengs for å støtte brukerlagring av flowdiagrammer - hvilke tabeller, kolonner og API-endepunkter som mangler.
 
 **Commits:** `21803dc` (merge PR #11), `3d94149` (handle-fix)
 
-### Onsdag 26. februar
+### Onsdag 11. mars
 Designet og implementerte databasestrukturen for flow-lagring. En ny migrasjonsscript `V4__create_user_flows_table.sql` opprettet tabellen `user_flows` med JSONB-kolonner for `nodes` og `edges`, fremmednøkkelkobling mot `users`, og et unikt constraint per bruker og side. En trigger (`V5`) sørger for automatisk oppdatering av `updated_at`. På API-siden ble modellklassen `UserFlow` og hjelpefunksjoner for databasekall lagt til.
 
 **Commits:** `a4f92c1` (DB-migrering), `b71e3a9` (API-modell)
 
-### Torsdag 27. februar
+### Torsdag 12. mars
 Implementerte Flask API-endepunkter for GET, POST og DELETE av flow-data, organisert i en Blueprint under `/api/flows`. Upsert-logikk via `ON CONFLICT DO UPDATE` gjør at POST håndterer både opprettelse og oppdatering. Et custom React-hook `useFlowPersistence` ble opprettet i frontend for gjenbrukbar lasting og lagring, og integrert i Dokumentstyring-siden som proof-of-concept.
 
 **Commits:** `c93d812` (API-endepunkter), `e14a607` (React-hook + frontend-integrasjon)
