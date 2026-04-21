@@ -2,9 +2,9 @@
 
 Dette dokumentet viser de faktiske kodeendringene som ble gjort 21. april 2026 i FlowCRT-prosjektet.
 
-**Diff-område:** `441aa972` (merge av fix_api_branch) + ucommitted wizard-endringer
+**Diff-område:** Ucommitted endringer i 3 frontend-filer
 
-**Merk:** Merge-commiten bringer inn gårsdagens JWT-endringer. Resten av endringene er frontend-wizard for kjøpssiden.
+**Merk:** Kun frontend-endringer denne dagen. Fokus på steg-wizard for kjøpssiden.
 
 ---
 
@@ -118,6 +118,21 @@ const [displayCompanyName, setDisplayCompanyName] = useState('')
 )}
 ```
 
+**handleDomainSelectChange:**
+
+```jsx
+const handleDomainSelectChange = (e) => {
+  const value = e.target.value
+  if (value === '__new__') {
+    setCompanyMode('new')
+    setSelectedDomainId(null)
+  } else {
+    setCompanyMode('existing')
+    setSelectedDomainId(Number(value))
+  }
+}
+```
+
 **Steg 2 — Produktvalg:**
 
 ```jsx
@@ -157,19 +172,6 @@ const [displayCompanyName, setDisplayCompanyName] = useState('')
 )}
 ```
 
-**Steg-indikator:**
-
-```jsx
-<div className="purchase-step-indicator">
-  {STEP_LABELS.map((label, i) => (
-    <div className={`purchase-step-dot ${i === stepIndex ? 'active' : ''} ${i < stepIndex ? 'completed' : ''}`}>
-      <span className="purchase-step-number">{i < stepIndex ? '✓' : i + 1}</span>
-      <span className="purchase-step-label">{label}</span>
-    </div>
-  ))}
-</div>
-```
-
 **handleBuy-logikken:**
 
 ```jsx
@@ -189,7 +191,7 @@ const handleBuy = async (standard) => {
 
 **Forklaring:**
 - Wizard-state styres av `step`-variabelen som har tre mulige verdier: `company`, `product` og `done`
-- `companyMode` skiller mellom "velg eksisterende" og "opprett ny" for FLOW_ADMIN — dropdow-verdien `__new__` trigger ny-modus
+- `companyMode` skiller mellom "velg eksisterende" og "opprett ny" for FLOW_ADMIN — dropdown-verdien `__new__` trigger ny-modus
 - `displayCompanyName` settes ved overgang fra steg 1 til 2, slik at bedriftsnavnet vises korrekt i steg 2 og 3 uavhengig av modus
 - `canProceedFromCompany` validerer at brukeren har fylt inn nødvendig informasjon før "Neste"-knappen aktiveres
 - `handleBuyMore` nullstiller all wizard-state og tar brukeren tilbake til steg 1
@@ -257,6 +259,11 @@ const handleBuy = async (standard) => {
   border-radius: 8px;
 }
 
+.purchase-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .purchase-btn-secondary {
   background: #fff;
   color: #013220;
@@ -285,4 +292,3 @@ const handleBuy = async (standard) => {
 - `buyStandard` støtter nå to flyter: ny bedrift (kaller `/auth/buy-flow` + `/auth/buy-product`) og eksisterende bedrift (kun `/auth/buy-product` med `domain_id`)
 - PurchaseStandards er omskrevet fra flatt grid til 3-stegs wizard med bedriftsvalg, produktvalg og bekreftelse
 - CSS-endringene følger eksisterende designsystem med FlowCRT-farger og inputstiler
-- Backend-avhengigheter dokumentert: `company_name` i DomainAccess-schema, `domain_id` i buy-product, per-domain purchased_products
